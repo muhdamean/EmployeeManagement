@@ -1,0 +1,79 @@
+﻿@model IEnumerable<IdentityRole>
+
+@{
+    ViewBag.Title = "List Roles";
+}
+<h3>All Roles</h3>
+@if (Model.Any())
+{
+    <a asp-controller="administration" asp-action="createrole" style="width:auto" class="btn btn-primary btn-sm mb-2">Add new role</a>
+    <table class="table table-responsive-md table-striped">
+        <thead>
+            <tr>
+                <td>Role Id</td>
+                <td>Role Name</td>
+                <td>Edit/Delete</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Model)
+            {
+                <tr>
+                    <td>@role.Id</td>
+                    <td>@role.Name</td>
+                    <td>
+                        <form asp-action="DeleteRole" asp-route-id="@role.Id" method="post">
+                            @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                            {
+                                <a asp-controller="administration" asp-action="editrole" asp-route-id="@role.Id" class="btn btn-primary btn-sm mr-2">Edit</a>
+                            }
+
+                            <span id="confirmDeleteSpan_@role.Id" style="display:none;">
+                                <span>Confirm delete?</span>
+                                <button type="submit" class="btn btn-danger btn-sm">Yes</button>
+                                <a href="#" class="btn btn-primary btn-sm" onclick="confirmDelete('@role.Id',false)">No</a>
+                            </span>
+
+                            <span id="deleteSpan_@role.Id">
+                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@role.Id', true)">Delete</a>
+                            </span>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No Roles Created
+        </div>
+        <div class="card-body">
+            Use the below to create a role
+        </div>
+        <a class="btn btn-primary" style="width:auto" asp-controller="administration" asp-action="CreateRole"> Create Role</a>
+    </div>
+}
+@section Scripts{
+    <script type="text/javascript">
+        function confirmDelete(uniqueId, isDeleteClicked) {
+            var deleteSpan = 'deleteSpan_' + uniqueId;
+            var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+            if (isDeleteClicked) {
+                //document.getElementById(deleteSpan).style.visibility = "hidden";
+                //document.getElementById(confirmDeleteSpan).style.visibility = "visible";
+                $('#' + deleteSpan).hide();
+                $('#' + confirmDeleteSpan).show();
+            }
+            else {
+                //document.getElementById(deleteSpan).style.visibility = "visible";
+                //document.getElementById(confirmDeleteSpan).style.visibility = "hidden";
+                $('#' + deleteSpan).show();
+                $('#' + confirmDeleteSpan).hide();
+            }
+        }
+    </script>
+    @*<script src="~/js/CustomScript.js"></script>*@
+}

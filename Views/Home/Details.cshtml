@@ -1,0 +1,30 @@
+﻿@model HomeDetailsViewModel
+
+@{
+    //Layout = "~/Views/Shared/_layout.cshtml"; //ViewStart file used
+    ViewBag.Title = "Employee List";
+    var PhotoPath = "~/images/" + (Model.Employee.PhotoPath ?? "no-image.jpg");
+}
+@*@{
+        var employee = ViewData["Employee"] as EmployeeManagement.Models.Employee;
+    }*@
+
+<div class="row justify-content-center m-3">
+    <div class="col-sm-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>@Model.Employee.Name</h3>
+            </div>
+            <div class="card-body text-center">
+                <img src="@PhotoPath" class="card-img-top imageThumbnail" asp-append-version="true" />
+                <h4>Email: @Model.Employee.Email</h4>
+                <h4>Department: @Model.Employee.Department</h4>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-controller="home" asp-action="index" class="btn btn-primary btn-sm">Back</a>
+                <a asp-controller="home" asp-action="edit" asp-route-id="@Model.Employee.EncryptedId" class="btn btn-success btn-sm">Edit</a>
+                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>

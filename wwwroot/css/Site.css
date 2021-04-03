@@ -1,0 +1,11 @@
+﻿.navbarHeader{
+    height:50px;
+}
+.btn{
+    width:auto;
+    /*width:75px;*/
+}
+.imageThumbnail{
+    height:200px;
+    width:auto;
+}
